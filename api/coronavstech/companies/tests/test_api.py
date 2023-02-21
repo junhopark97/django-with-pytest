@@ -10,18 +10,21 @@ from companies.models import Company
 
 @pytest.mark.django_db
 class TestGetCompanies(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.companies_url = reverse('companies-list')
+
+    def tearDown(self) -> None:  # 테스트가 실행될 때마다 실행.
+        pass
+
     def test_zero_companies_should_return_empty_list(self) -> None:
-        client = Client()
-        companies_url = reverse('companies-list')
-        response = client.get(companies_url)
+        response = self.client.get(self.companies_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), [])
 
     def test_one_company_exists_should_succeeed(self) -> None:
-        client = Client()
         test_company = Company.objects.create(name='Amazon')
-        companies_url = reverse('companies-list')
-        response = client.get(companies_url)
+        response = self.client.get(self.companies_url)
         # print(response.content)  # pytest -v -s
         response_content = json.loads(response.content)[0]
         self.assertEqual(response.status_code, 200)
