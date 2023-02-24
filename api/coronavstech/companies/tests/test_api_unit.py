@@ -27,10 +27,10 @@ class TestGetCompanies(BasicCompanyAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), [])
 
-    def test_one_company_exists_should_succeeed(self) -> None:
+    def test_one_company_exists_should_succeed(self) -> None:
         test_company = Company.objects.create(name="Amazon")
         response = self.client.get(self.companies_url)
-        # print(response.content)  # pytest -v -s
+        # print(response.content)  # pytest -v -sxw
         response_content = json.loads(response.content)[0]
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_content.get("name"), test_company.name)
