@@ -33,17 +33,16 @@ class EmailUnitTest(TestCase):
     def test_send_email_without_arguments_should_send_empty_email(self) -> None:
         client = Client()
         with patch(
-            'companies.views.send_email'
+            'companies.views.send_mail'
         ) as mocked_send_mail_function:
             response = client.post(path='/send-email')
             response_content = json.loads(response.content)
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response_content['status'], 'success')
-            self.assertEqual(response_content['info'], 'email sent successfully')
-
+            self.assertEqual(response_content["status"], 'success')
+            self.assertEqual(response_content["info"], 'email sent successfully')
             mocked_send_mail_function.assert_called_with(
                 subject=None,
                 message=None,
-                from_email="israeltechlayoffs@gmail.com",
-                recipient_list=["israeltechlayoffs@gmail.com"],
+                from_email='do8972@gmail.com',
+                recipient_list=['do8972@gmail.com'],
             )
