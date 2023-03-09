@@ -46,3 +46,9 @@ class EmailUnitTest(TestCase):
                 from_email='do8972@gmail.com',
                 recipient_list=['do8972@gmail.com'],
             )
+
+    def test_send_email_with_get_verb_should_fail(self) -> None:
+        client = Client()
+        response = client.get(path='/send-email')
+        assert response.status_code == 405
+        assert json.loads(response.content) == {'detail': 'Method "GET" not allowed.'}
